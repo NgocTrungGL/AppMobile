@@ -1,6 +1,8 @@
 package com.finalmobile.app_sell;
 
 import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +24,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    public void Anhxa()
+    {
+        toolbar.findViewById(R.id.toolbarmainpage);
+        listView.findViewById(R.id.lvmainpage);
     }
 }
