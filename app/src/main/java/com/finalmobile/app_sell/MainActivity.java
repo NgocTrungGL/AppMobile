@@ -1,16 +1,22 @@
 package com.finalmobile.app_sell;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
+=======
+import android.widget.ListView;
+import android.widget.Toolbar;
+>>>>>>> 16699cfb6bc1baa34e5f2fbde78ccede0760af33
 import android.widget.ViewFlipper;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+<<<<<<< HEAD
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +26,14 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+=======
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
+>>>>>>> 16699cfb6bc1baa34e5f2fbde78ccede0760af33
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -28,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ListView lvMainPage;
     DrawerLayout drawerLayout;
+
+    private Toolbar toolbar;
+    private ListView listViewmain;
+    private ViewFlipper viewFlipper;
+    private RecyclerView recyclerView;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+<<<<<<< HEAD
 
     private void ActionViewFlipper() {
         List<String> mangquangcao = new ArrayList<>();
@@ -77,5 +98,14 @@ public class MainActivity extends AppCompatActivity {
         lvMainPage = findViewById(R.id.lvMainPage);
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawerlayout);
+=======
+    public void Anhxa()
+    {
+        toolbar.findViewById(R.id.toolbarmainpage);
+        listViewmain.findViewById(R.id.lvmainpage);
+        viewFlipper.findViewById(R.id.viewlipper);
+        recyclerView.findViewById(R.id.recyclerview);
+        navigationView.findViewById(R.id.naviview);
+>>>>>>> 16699cfb6bc1baa34e5f2fbde78ccede0760af33
     }
 }
