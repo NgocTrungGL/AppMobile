@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         <LinearLayout
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <Toolbar
-                android:id="@+id/toolbarmainpage"
+                android:id="@+id/toolbar"
                 android:title="Trang chinh"
                 android:background="#ff00dfff"
                 android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                 >
             </Toolbar>
             <ViewFlipper
-                android:id="@+id/viewlipper"
+                android:id="@+id/viewLipper"
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
 
@@ -42,22 +43,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview"
+                    android:id="@+id/recyclerView"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/naviview"
+            android:id="@+id/navigationView"
             android:layout_gravity="start"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ListView
-                android:id="@+id/lvmainpage"
+                android:id="@+id/lvMainPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
             />
