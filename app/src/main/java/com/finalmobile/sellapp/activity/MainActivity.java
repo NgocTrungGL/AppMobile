@@ -1,12 +1,15 @@
-package com.finalmobile.sellapp;
+package com.finalmobile.sellapp.activity;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 import android.widget.ViewFlipper;
 
@@ -20,10 +23,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.finalmobile.sellapp.R;
+import com.finalmobile.sellapp.adapter.LoaiSpAdapter;
+import com.finalmobile.sellapp.model.LoaiSp;
+import com.finalmobile.sellapp.model.LoaiSpModel;
+import com.finalmobile.sellapp.retrofit.ApiBanHang;
+import com.finalmobile.sellapp.retrofit.RetrofitClient;
+import com.finalmobile.sellapp.utils.Utils;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -32,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ListView listView;
     DrawerLayout drawerLayout;
+    LoaiSpAdapter loaiSpAdapter;
+    List<LoaiSp> mangloaisp;
+    LoaiSpModel loaiSpModel;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    ApiBanHang apiBanHang;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +61,33 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Anhxa();
+        apiBanHang = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiBanHang.class);
+        if (isConnected(this))
+        {
+            Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+            ActionViewFlipper();
+            getLoaiSanPham();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "không có kết nối Internet", Toast.LENGTH_LONG).show();
+        }
     }
+
+    private void getLoaiSanPham() {
+
+        compositeDisposable.add(apiBanHang.getLoaiSp()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        loaiSpModel -> {
+                            if(loaiSpModel.isSuccess()){
+                                Toast.makeText(getApplicationContext(),loaiSpModel.getResult().get(0).getTensanpham(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ));
+    }
+
     private void ActionViewFlipper()
     {
         List<String> qc = new ArrayList<>();
@@ -81,11 +126,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void Anhxa()
     {
-        toolbar.findViewById(R.id.toolbarMainpage);
-        viewFlipper.findViewById(R.id.viewFlipper);
-        recyclerView.findViewById(R.id.recyclerview);
-        navigationView.findViewById(R.id.navigationview);
-        listView.findViewById(R.id.lvMainpage);
-        drawerLayout.findViewById(R.id.drawerlayout);
+        toolbar = findViewById(R.id.toolbarMainpage);
+        viewFlipper = findViewById(R.id.viewFlipper);  // Gán giá trị cho viewFlipper
+        recyclerView = findViewById(R.id.recyclerview);
+        navigationView = findViewById(R.id.navigationview);
+        listView = findViewById(R.id.lvMainpage);
+        drawerLayout = findViewById(R.id.drawerlayout);
+
+        //List
+        mangloaisp = new ArrayList<>();
+        //Adapter
+        loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
+        listView.setAdapter(loaiSpAdapter);
+    }
+    //kiểm tra thiết bị có kết nối Internet không
+    private boolean isConnected(Context context)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if((wifi != null && wifi.isConnected()) || (mobile != null && mobile.isConnected()) )
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

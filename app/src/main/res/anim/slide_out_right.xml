@@ -3,6 +3,6 @@
     android:shareInterpolator="false"
     android:duration="2000"
     >
-    <translate android:fromXDelta="0%" android:fromYDelta="100%"/>
+    <translate android:fromXDelta="0%" android:fromYDelta="-100%"/>
     <alpha android:fromAlpha="1.0" android:toAlpha="0.0"/>
 </set>

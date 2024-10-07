@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawerlayout"
@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
             <Toolbar
                 android:id="@+id/toolbarMainpage"
-                android:title="Trang Chinh"
+                android:title="Trang Chính"
                 android:background="#ff00dfff"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
@@ -38,7 +38,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/holo_red_light"
                     android:textStyle="bold"
-                    android:text="San pham moi nhat"
+                    android:text="Sản phẩm mới nhất"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <androidx.recyclerview.widget.RecyclerView
