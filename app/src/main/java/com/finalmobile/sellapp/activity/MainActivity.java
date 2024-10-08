@@ -10,8 +10,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+//import android.widget.Toolbar;
 import android.widget.ViewFlipper;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Anhxa();
         apiBanHang = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiBanHang.class);
         if (isConnected(this))
         {
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         Animation slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);
         Animation slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right);
         viewFlipper.setInAnimation(slide_in);
-        viewFlipper.setInAnimation(slide_out);
+        viewFlipper.setOutAnimation(slide_out);
     }
     private void ActionBar()
     {
@@ -120,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-    }
-
-    private void setSupportActionBar(Toolbar toolbar) {
     }
 
     private void Anhxa()
