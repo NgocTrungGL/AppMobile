@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         apiBanHang = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiBanHang.class);
         if (isConnected(this))
         {
-            Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
             ActionViewFlipper();
             getLoaiSanPham();
         }
@@ -82,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(
                         loaiSpModel -> {
                             if(loaiSpModel.isSuccess()){
-                                Toast.makeText(getApplicationContext(),loaiSpModel.getResult().get(0).getTensanpham(), Toast.LENGTH_LONG).show();
+                                mangloaisp = loaiSpModel.getResult();
+                                loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
+                                listView.setAdapter(loaiSpAdapter);
                             }
                         }
                 ));
@@ -135,9 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
         //List
         mangloaisp = new ArrayList<>();
-        //Adapter
-        loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangloaisp);
-        listView.setAdapter(loaiSpAdapter);
     }
     //kiểm tra thiết bị có kết nối Internet không
     private boolean isConnected(Context context)
@@ -152,5 +150,11 @@ public class MainActivity extends AppCompatActivity {
         else {
             return false;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        compositeDisposable.clear();
+        super.onDestroy();
     }
 }
