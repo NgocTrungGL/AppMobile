@@ -1,12 +1,14 @@
 package com.finalmobile.sellapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,13 +24,17 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.finalmobile.sellapp.R;
 import com.finalmobile.sellapp.adapter.LoaiSpAdapter;
+import com.finalmobile.sellapp.adapter.SanPhamMoiAdapter;
 import com.finalmobile.sellapp.model.LoaiSp;
 import com.finalmobile.sellapp.model.LoaiSpModel;
+import com.finalmobile.sellapp.model.SanPhamMoi;
+import com.finalmobile.sellapp.model.SanPhamMoiModel;
 import com.finalmobile.sellapp.retrofit.ApiBanHang;
 import com.finalmobile.sellapp.retrofit.RetrofitClient;
 import com.finalmobile.sellapp.utils.Utils;
@@ -44,7 +50,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     ViewFlipper viewFlipper;
-    RecyclerView recyclerView;
+    RecyclerView recyclerViewManHinhChinh;
     NavigationView navigationView;
     ListView listView;
     DrawerLayout drawerLayout;
@@ -53,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     LoaiSpModel loaiSpModel;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ApiBanHang apiBanHang;
+    List<SanPhamMoi> mangSpMoi;
+    SanPhamMoiAdapter spAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +77,54 @@ public class MainActivity extends AppCompatActivity {
         {
             ActionViewFlipper();
             getLoaiSanPham();
+            getSpMoi();
+            getEventClick();
         }
         else {
             Toast.makeText(getApplicationContext(), "không có kết nối Internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getEventClick() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case  0:
+                        Intent trangchu = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(trangchu);
+                        break;
+                    case 1:
+                        Intent dienthoai = new Intent(getApplicationContext(), DienThoaiActivity.class);
+                        startActivity(dienthoai);
+
+                        break;
+                    case 2:
+                        Intent laptop = new Intent(getApplicationContext(), LaptopActivity.class);
+                        startActivity(laptop);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void getSpMoi() {
+        compositeDisposable.add(apiBanHang.getSpMoi()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                       sanPhamMoiModel -> {
+                           if (sanPhamMoiModel.isSuccess()){
+                               mangSpMoi = sanPhamMoiModel.getResult();
+                               spAdapter = new SanPhamMoiAdapter(getApplicationContext(), mangSpMoi);
+                               recyclerViewManHinhChinh.setAdapter(spAdapter);
+                           }
+
+                       },
+                        throwable -> {
+                           Toast.makeText(getApplicationContext(), "Không kết nối được với sêver" + throwable.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                ));
     }
 
     private void getLoaiSanPham() {
@@ -127,13 +180,17 @@ public class MainActivity extends AppCompatActivity {
     {
         toolbar = findViewById(R.id.toolbarMainpage);
         viewFlipper = findViewById(R.id.viewFlipper);  // Gán giá trị cho viewFlipper
-        recyclerView = findViewById(R.id.recyclerview);
+        recyclerViewManHinhChinh = findViewById(R.id.recyclerview);
+        RecyclerView.LayoutManager layoutManager= new GridLayoutManager(this,2);
+        recyclerViewManHinhChinh.setLayoutManager(layoutManager);
+        recyclerViewManHinhChinh.setHasFixedSize(true);
         navigationView = findViewById(R.id.navigationview);
         listView = findViewById(R.id.lvMainpage);
         drawerLayout = findViewById(R.id.drawerlayout);
 
         //List
         mangloaisp = new ArrayList<>();
+        mangSpMoi = new ArrayList<>();
     }
     //kiểm tra thiết bị có kết nối Internet không
     private boolean isConnected(Context context)

@@ -9,8 +9,8 @@
         android:id="@+id/item_image"
         android:layout_marginLeft="10dp"
         android:src="@drawable/baseline_perm_media_24"
-        android:layout_width="45dp"
-        android:layout_height="45dp"/>
+        android:layout_width="55dp"
+        android:layout_height="55dp"/>
     <TextView
         android:id="@+id/item_tensp"
         android:textSize="15sp"
